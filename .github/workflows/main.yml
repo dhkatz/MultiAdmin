@@ -64,3 +64,11 @@ jobs:
       with:
         name: MultiAdmin-all-${{matrix.framework}}
         path: ${{github.workspace}}/Builds/${{matrix.framework}}
+
+    - name: Release
+      uses: softprops/action-gh-release@v1
+      if: startsWith(github.ref, 'refs/tags/')
+      env:
+        EXE_SUFFIX: "${{ matrix.os == 'windows-latest' && '.exe' || '' }}"
+      with:
+        files: ${{github.workspace}}/Builds/${{matrix.framework}}/${{matrix.target}}/MultiAdmin${{env.EXE_SUFFIX}}
